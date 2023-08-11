@@ -4,6 +4,7 @@ namespace Leilao\Services;
 
 use Leilao\Model\Lance;
 use Leilao\Model\Leilao;
+use function PHPUnit\Framework\throwException;
 
 class Avaliador
 {
@@ -13,6 +14,10 @@ class Avaliador
 
     public function avalia(Leilao $leilao): void
     {
+        if(empty($leilao->getLances())){
+            throw new \DomainException('Não é possível avaliar leilão vazio');
+        }
+
         foreach($leilao->getLances() as $lance){
             if($lance->getValor() > $this->maiorValor){
                 $this->maiorValor = $lance->getValor();
